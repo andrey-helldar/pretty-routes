@@ -1,9 +1,12 @@
 .idea/
+
 build/
 vendor/
+node_modules/
 
 *.cache
 *.clover
 *.orig
 
 composer.lock
+yarn.lock

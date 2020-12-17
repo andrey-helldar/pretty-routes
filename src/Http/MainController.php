@@ -5,8 +5,9 @@ namespace PrettyRoutes\Http;
 use Helldar\LaravelRoutesCore\Support\Routes;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
+use PrettyRoutes\Facades\Config;
 
-class PrettyRoutesController extends BaseController
+class MainController extends BaseController
 {
     /**
      * Getting a template for routes.
@@ -15,7 +16,7 @@ class PrettyRoutesController extends BaseController
      */
     public function show()
     {
-        return view('pretty-routes::layout');
+        return view('pretty-routes::app');
     }
 
     /**
@@ -28,11 +29,11 @@ class PrettyRoutesController extends BaseController
     public function routes(Routes $routes)
     {
         $content = $routes
-            ->setApiMiddlewares((array) config('pretty-routes.api_middleware'))
-            ->setWebMiddlewares((array) config('pretty-routes.web_middleware'))
-            ->setHideMethods(config('pretty-routes.hide_methods', []))
-            ->setHideMatching(config('pretty-routes.hide_matching', []))
-            ->setDomainForce(config('pretty-routes.domain_force', false))
+            ->setApiMiddlewares((array) Config::apiMiddleware())
+            ->setWebMiddlewares((array) Config::webMiddleware())
+            ->setHideMethods(Config::hideMethods())
+            ->setHideMatching(Config::hideMatching())
+            ->setDomainForce(Config::domainForce())
             ->setUrl(config('app.url'))
             ->setNamespace(config('modules.namespace'))
             ->get();
@@ -47,7 +48,7 @@ class PrettyRoutesController extends BaseController
      */
     public function clear()
     {
-        if (config('app.env') !== 'production' && (bool) config('app.debug') === true) {
+        if (Config::allowCleanup()) {
             Artisan::call('route:clear');
 
             return response()->json('ok');

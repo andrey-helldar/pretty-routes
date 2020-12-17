@@ -4,6 +4,7 @@ namespace PrettyRoutes\Support;
 
 use Helldar\Support\Facades\Arr;
 use Illuminate\Support\Facades\App;
+use PrettyRoutes\Facades\Config as Conf;
 
 final class Trans
 {
@@ -48,7 +49,7 @@ final class Trans
 
     protected function getForceLocale()
     {
-        return config('pretty-routes.locale_force');
+        return Conf::forceLocale();
     }
 
     protected function exist(string $locale): bool

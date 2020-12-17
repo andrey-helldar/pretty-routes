@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 
 final class AjaxTest extends TestCase
@@ -78,5 +79,16 @@ final class AjaxTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('ok');
         $response->assertDontSee('data');
+    }
+
+    public function testDisabledClearRoutes()
+    {
+        Config::set('app.debug', false);
+
+        $response = $this->post('/routes/clear');
+
+        $response->assertStatus(400);
+        $response->assertSee('disabled');
+        $response->assertDontSee('ok');
     }
 }

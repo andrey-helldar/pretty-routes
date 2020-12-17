@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Config;
+use PrettyRoutes\Facades\Resources;
 
 class ViewTest extends TestCase
 {
@@ -12,7 +13,7 @@ class ViewTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('<!DOCTYPE html>', false);
-        $response->assertSee('<div id="app">', false);
+        $response->assertSee('<div id="app"></div>', false);
 
         $response->assertDontSee('Foo Bar');
     }
@@ -22,7 +23,7 @@ class ViewTest extends TestCase
         $response = $this->get('/routes');
 
         $response->assertStatus(200);
-        $response->assertSee('const isEnabledCleanup = true;');
+        $response->assertSee('window.isEnabledCleanup = true;');
     }
 
     public function testProductionClearRoutes()
@@ -32,7 +33,7 @@ class ViewTest extends TestCase
         $response = $this->get('/routes');
 
         $response->assertStatus(200);
-        $response->assertSee('const isEnabledCleanup = false;');
+        $response->assertSee('window.isEnabledCleanup = false;');
     }
 
     public function testDisabledClearRoutes()
@@ -42,6 +43,40 @@ class ViewTest extends TestCase
         $response = $this->get('/routes');
 
         $response->assertStatus(200);
-        $response->assertSee('const isEnabledCleanup = false;');
+        $response->assertSee('window.isEnabledCleanup = false;');
+    }
+
+    public function testDark()
+    {
+        $response = $this->get('/routes');
+
+        $response->assertStatus(200);
+        $response->assertSee('window.dark = \'auto\';', false);
+    }
+
+    public function testRoutes()
+    {
+        $response = $this->get('/routes');
+
+        $response->assertStatus(200);
+        $response->assertSee(route('pretty-routes.list'));
+        $response->assertSee(route('pretty-routes.clear'));
+    }
+
+    public function testResources()
+    {
+        $response = $this->get('/routes');
+
+        $response->assertStatus(200);
+
+        $response->assertSee(Resources::fonts());
+        $response->assertSee(Resources::icons());
+
+        $response->assertSee(Resources::githubIcon());
+        $response->assertSee(Resources::repositoryUrl());
+
+        $response->assertSee(Resources::jsManifest());
+        $response->assertSee(Resources::jsVendor());
+        $response->assertSee(Resources::jsApp());
     }
 }

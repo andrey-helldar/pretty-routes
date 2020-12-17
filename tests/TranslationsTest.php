@@ -2,7 +2,8 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Config as AppConfig;
+use PrettyRoutes\Facades\Config;
 
 final class TranslationsTest extends TestCase
 {
@@ -16,6 +17,7 @@ final class TranslationsTest extends TestCase
 
         $response->assertSee('Action');
         $response->assertSee('All');
+        $response->assertSee('Clear route cache');
         $response->assertSee('Deprecated');
         $response->assertSee('Domain');
         $response->assertSee('Loading... Please wait...');
@@ -66,6 +68,7 @@ final class TranslationsTest extends TestCase
         $response->assertSee('Не указано');
         $response->assertSee('Обновить список маршрутов');
         $response->assertSee('Открыть страницу проекта в GitHub');
+        $response->assertSee('Очистить кэш роутов');
         $response->assertSee('Поиск');
         $response->assertSee('Показать');
         $response->assertSee('Приоритет');
@@ -112,7 +115,8 @@ final class TranslationsTest extends TestCase
 
     protected function setConfigLocale(string $app, string $package = null): void
     {
-        Config::set('app.locale', $app);
-        Config::set('pretty-routes.locale_force', $package ?: false);
+        AppConfig::set('app.locale', $app);
+
+        Config::set('locale_force', $package ?: false);
     }
 }

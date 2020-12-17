@@ -2,6 +2,12 @@
 
 return [
     /*
+     * Indicates whether to enable pretty routes only when debug is enabled (APP_DEBUG).
+     */
+
+    'enabled' => env('APP_DEBUG'),
+
+    /*
      * The endpoint to access the routes.
      */
 
@@ -28,12 +34,6 @@ return [
      */
 
     'api_middleware' => 'api',
-
-    /*
-     * Indicates whether to enable pretty routes only when debug is enabled (APP_DEBUG).
-     */
-
-    'debug_only' => true,
 
     /*
      * The methods to hide.

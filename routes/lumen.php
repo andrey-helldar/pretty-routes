@@ -1,27 +1,28 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use PrettyRoutes\Facades\Config;
 
 Route::group([
     'as'         => 'pretty-routes',
-    'middleware' => config('pretty-routes.middlewares'),
-    'prefix'     => config('pretty-routes.url'),
+    'middleware' => Config::middlewares(),
+    'prefix'     => Config::url(),
 ], static function () {
     Route::get('/', [
-        'middleware' => config('pretty-routes.web_middleware'),
-        'uses'       => 'PrettyRoutes\Http\PrettyRoutesController@show',
+        'middleware' => Config::webMiddleware(),
+        'uses'       => 'PrettyRoutes\Http\MainController@show',
         'as'         => 'show',
     ]);
 
     Route::get('json', [
-        'middleware' => config('pretty-routes.api_middleware'),
-        'uses'       => 'PrettyRoutes\Http\PrettyRoutesController@routes',
+        'middleware' => Config::apiMiddleware(),
+        'uses'       => 'PrettyRoutes\Http\MainController@routes',
         'as'         => 'list',
     ]);
 
     Route::post('clear', [
-        'middleware' => config('pretty-routes.api_middleware'),
-        'uses'       => 'PrettyRoutes\Http\PrettyRoutesController@clear',
+        'middleware' => Config::apiMiddleware(),
+        'uses'       => 'PrettyRoutes\Http\MainController@clear',
         'as'         => 'clear',
     ]);
 });
